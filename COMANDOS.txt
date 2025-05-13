@@ -1,0 +1,71 @@
+CONEXION SQL
+"Server=DESKTOP-CJE8DS1\\SQLEXPRESS;Database=PruebaTecnica;Trusted_Connection=True;TrustServerCertificate=True;"
+
+builder.Services.AddDbContext<ApiRestProjectContext>(opc =>
+    opc.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+
+Migracion DataFirst
+
+INSTALACION DE DEPENDECIAS PARA LAS MIGRACIONES Y DEMAS}
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
+npm install tailwindcss @tailwindcss/cli
+npm i -D daisyui@latest
+
+
+CREACIÓN DEL ARCHIVOS OUTUPUT.CSS TAILWIND
+npx @tailwindcss/cli -i wwwroot/css/site.css -o wwwroot/css/output.css --watch
+
+
+ACTUALIZAR EL PROYECTO CON MODIFICACIONES EN LA BASE DE DATOS
+Scaffold-DbContext "Server=DESKTOP-CJE8DS1\SQLEXPRESS;Database=PruebaTecnica;Trusted_Connection=True;TrustServerCertificate=True;"  Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+En Vs Code
+dotnet ef dbcontext scaffold "Server=DESKTOP-CJE8DS1\SQLEXPRESS;Database=ShippingCompany;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --force
+
+
+CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
+INJECCION  
+
+private readonly DbSet<T> _dbSet;
+  private readonly HospitalAntioquiaContext _context;
+
+  public Repository(HospitalAntioquiaContext Context)
+  {
+      _context = Context;
+      _dbSet = _context.Set<T>();
+  }
+
+
+AUTOMAPPER INSTALACION
+dotnet add package AutoMapper
+dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
+
+
+ <li th:each="data : ${dataList}" th:text="${data.full_name_product}"></li>
+    @GetMapping("/")
+    public String index(Model model) {
+        System.out.println("Entro");
+        List<Product> products  = _RepositoryProducts.findAll();
+        for(Product product : products ){
+            System.out.println(product);
+        }
+        model.addAttribute("dataList", products );
+        return "Index";
+    }
+   

@@ -1,0 +1,82 @@
+﻿@model List<CRUD_TecnicaTest.Lavadora>;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<h2>Listado de Lavadoras</h2>
+<form asp-action="GetGenericT" asp-controller="Home" method="get">
+    <button class="btn btn-success">MIRAR REGISTROS</button>
+</form>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    GUARDAR
+</button>
+
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Marca</th>
+                <th>Categoria</th>
+                <th>Funcionalidades</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lavadora in Model)
+            {
+                <tr>
+                    <td>@lavadora.Id</td>
+                    <td>@lavadora.Brand</td>
+                    <td>@lavadora.Category.NameCategory</td>
+                    <td>
+                        <form asp-action="DeleteById" asp-controller="Home" method="post">
+                            <input type="hidden" value="@lavadora.Id" name="IdLavadora" />
+                            <button type="submit" class="btn btn-warning">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay lavadoras para mostrar.</p>
+}
+@if (Model != null && Model.Any())
+{
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form asp-action="AddGenericT" asp-controller="Home" method="post">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">MARCA</span>
+                            <input type="text" class="form-control" name="Brand" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <select name="CategoryId" class="form-control">
+                            <option value="">Seleccione una categoría</option>
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.Category.Id">@item.Category.NameCategory</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">GUARDAR</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <p>Tenemos problemas</p>
+}
+
+
+
+</div>
